@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Representa un pedido de encomienda.
+ * Representa un pedido de encomienda de SpeedFast.
+ * 
  * @author Jorge Munoz Leon
  */
 public class PedidoEncomienda extends Pedido {
@@ -11,28 +12,24 @@ public class PedidoEncomienda extends Pedido {
      *
      * @param idPedido identificador del pedido
      * @param direccionEntrega dirección de entrega
+     * @param distanciaKm distancia hasta el lugar de entrega
      */
-    public PedidoEncomienda(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Encomienda");
+    public PedidoEncomienda(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     /**
-     * Sobrescribe el método de asignación de repartidor.
-     */
-    @Override
-    public void asignarRepartidor() {
-        System.out.println("[Pedido Encomienda]");
-        System.out.println("Asignando repartidor...");
-        System.out.println("→ Validando peso y embalaje... OK");
-    }
-
-    /**
-     * Sobrecarga el método para asignar un repartidor específico.
+     * Calcula el tiempo estimado de entrega para una encomienda.
      *
-     * @param nombreRepartidor nombre del repartidor
+     * Fórmula:
+     * 20 minutos base + 1.5 minutos por cada kilómetro.
+     *
+     * El resultado se redondea a un número entero.
+     *
+     * @return tiempo estimado en minutos
      */
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("→ Pedido asignado a " + nombreRepartidor);
+    public int calcularTiempoEntrega() {
+        return (int) Math.round(20 + (1.5 * distanciaKm));
     }
 }

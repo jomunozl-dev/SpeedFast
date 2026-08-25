@@ -1,9 +1,12 @@
 package model;
 
 /**
- * Representa una compra Express.
+ * Representa un pedido Express de SpeedFast.
+ * 
  * @author Jorge Munoz Leon
+ * 
  */
+
 public class PedidoExpress extends Pedido {
 
     /**
@@ -11,29 +14,30 @@ public class PedidoExpress extends Pedido {
      *
      * @param idPedido identificador del pedido
      * @param direccionEntrega dirección de entrega
+     * @param distanciaKm distancia hasta el lugar de entrega
      */
-    public PedidoExpress(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Express");
+    public PedidoExpress(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     /**
-     * Sobrescribe el método de asignación de repartidor.
-     */
-    @Override
-    public void asignarRepartidor() {
-        System.out.println("[Pedido Express]");
-        System.out.println("Asignando repartidor...");
-        System.out.println("→ Repartidor más cercano con disponibilidad inmediata");
-        System.out.println("encontrado.");
-    }
-
-    /**
-     * Sobrecarga el método para asignar un repartidor específico.
+     * Calcula el tiempo estimado de entrega para un pedido Express.
      *
-     * @param nombreRepartidor nombre del repartidor
+     * El tiempo base es de 10 minutos.
+     * Si la distancia es mayor a 5 km, se agregan 5 minutos.
+     *
+     * @return tiempo estimado en minutos
      */
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("→ Pedido asignado a " + nombreRepartidor);
+    public int calcularTiempoEntrega() {
+
+        int tiempo = 10;
+
+        // Se agregan 5 minutos si la distancia supera los 5 km
+        if (distanciaKm > 5) {
+            tiempo += 5;
+        }
+
+        return tiempo;
     }
 }

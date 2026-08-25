@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Representa un pedido de comida.
+ * Representa un pedido de comida de SpeedFast.
+ * 
  * @author Jorge Munoz Leon
  */
 public class PedidoComida extends Pedido {
@@ -11,28 +12,22 @@ public class PedidoComida extends Pedido {
      *
      * @param idPedido identificador del pedido
      * @param direccionEntrega dirección de entrega
+     * @param distanciaKm distancia hasta el lugar de entrega
      */
-    public PedidoComida(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Comida");
+    public PedidoComida(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     /**
-     * Sobrescribe el método de asignación de repartidor.
-     */
-    @Override
-    public void asignarRepartidor() {
-        System.out.println("[Pedido Comida]");
-        System.out.println("Asignando repartidor...");
-        System.out.println("→ Verificando mochila térmica... OK");
-    }
-
-    /**
-     * Sobrecarga el método para asignar un repartidor específico.
+     * Calcula el tiempo estimado de entrega para comida.
      *
-     * @param nombreRepartidor nombre del repartidor
+     * Fórmula:
+     * 15 minutos base + 2 minutos por cada kilómetro.
+     *
+     * @return tiempo estimado en minutos
      */
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        System.out.println("→ Pedido asignado a " + nombreRepartidor);
+    public int calcularTiempoEntrega() {
+        return (int) (15 + (2 * distanciaKm));
     }
 }
