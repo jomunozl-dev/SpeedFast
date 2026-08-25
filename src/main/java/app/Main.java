@@ -1,48 +1,72 @@
+package app;
+
+import model.Pedido;
 import model.PedidoComida;
 import model.PedidoEncomienda;
 import model.PedidoExpress;
 
 /**
- * Clase principal del sistema SpeedFast.
+ * 
+ * Clase principal que prueba los distintos tipos de pedidos.
+ * 
  * @author Jorge Munoz Leon
+ * 
  */
+
 public class Main {
 
     public static void main(String[] args) {
 
-        // Crear un pedido de comida
-        PedidoComida comida = new PedidoComida(
+        // Crear un pedido de comida de 5 km
+        Pedido comida = new PedidoComida(
                 1,
-                "Av. Alemania 123"
+                "Av. Alemania 123",
+                5
         );
 
-        // Crear una encomienda
-        PedidoEncomienda encomienda = new PedidoEncomienda(
+        // Crear una encomienda de 5 km
+        Pedido encomienda = new PedidoEncomienda(
                 2,
-                "Av. España 456"
+                "Av. España 456",
+                5
         );
 
-        // Crear una compra Express
-        PedidoExpress express = new PedidoExpress(
+        // Crear un pedido Express de 7 km
+        Pedido express = new PedidoExpress(
                 3,
-                "Av. Los Carrera 789"
+                "Av. Los Carrera 789",
+                7
         );
 
-        // Asignar repartidor al pedido de comida
-        comida.asignarRepartidor();
-        comida.asignarRepartidor("Juan Pérez");
+        System.out.println("===== PEDIDO COMIDA =====");
 
-        // Separación entre pedidos
-        System.out.println();
+        // Mostrar información básica
+        comida.mostrarResumen();
 
-        // Asignar repartidor a la encomienda
-        encomienda.asignarRepartidor();
-        encomienda.asignarRepartidor("Camila Soto");
+        // Calcular y mostrar tiempo estimado
+        System.out.println("Tiempo estimado: "
+                + comida.calcularTiempoEntrega() + " minutos");
 
         System.out.println();
 
-        // Asignar repartidor a la compra Express
-        express.asignarRepartidor();
-        express.asignarRepartidor("Luis Díaz");
+        System.out.println("===== PEDIDO ENCOMIENDA =====");
+
+        // Mostrar información básica
+        encomienda.mostrarResumen();
+
+        // Calcular y mostrar tiempo estimado
+        System.out.println("Tiempo estimado: "
+                + encomienda.calcularTiempoEntrega() + " minutos");
+
+        System.out.println();
+
+        System.out.println("===== PEDIDO EXPRESS =====");
+
+        // Mostrar información básica
+        express.mostrarResumen();
+
+        // Calcular y mostrar tiempo estimado
+        System.out.println("Tiempo estimado: "
+                + express.calcularTiempoEntrega() + " minutos");
     }
 }
