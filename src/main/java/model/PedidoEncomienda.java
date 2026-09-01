@@ -1,8 +1,8 @@
 package model;
 
 /**
- * Representa un pedido de encomienda de SpeedFast.
- * 
+ * Representa un pedido de tipo encomienda.
+ * Hereda las características generales de Pedido.
  * @author Jorge Munoz Leon
  */
 public class PedidoEncomienda extends Pedido {
@@ -10,26 +10,50 @@ public class PedidoEncomienda extends Pedido {
     /**
      * Constructor de PedidoEncomienda.
      *
-     * @param idPedido identificador del pedido
-     * @param direccionEntrega dirección de entrega
-     * @param distanciaKm distancia hasta el lugar de entrega
+     * @param numeroPedido número identificador del pedido.
+     * @param direccion dirección donde se entrega la encomienda.
+     * @param distancia distancia de la entrega en kilómetros.
      */
-    public PedidoEncomienda(int idPedido, String direccionEntrega, double distanciaKm) {
-        super(idPedido, direccionEntrega, distanciaKm);
+    public PedidoEncomienda(
+            int numeroPedido,
+            String direccion,
+            double distancia) {
+
+        // Inicializa los atributos heredados.
+        super(numeroPedido, direccion, distancia);
     }
 
     /**
-     * Calcula el tiempo estimado de entrega para una encomienda.
+     * Asigna automáticamente un repartidor para la encomienda.
      *
-     * Fórmula:
-     * 20 minutos base + 1.5 minutos por cada kilómetro.
+     * Este método sobrescribe la implementación de Pedido.
+     */
+    @Override
+    public void asignarRepartidor() {
+
+        repartidor = "Daniela Tapia";
+
+        System.out.println(
+                "Asignando repartidor para encomienda..."
+        );
+
+        System.out.println(
+                "→ Validando peso y embalaje... OK"
+        );
+
+        System.out.println(
+                "→ Pedido asignado a " + repartidor
+        );
+    }
+
+    /**
+     * Calcula el tiempo estimado de entrega de la encomienda.
      *
-     * El resultado se redondea a un número entero.
-     *
-     * @return tiempo estimado en minutos
+     * @return tiempo estimado en minutos.
      */
     @Override
     public int calcularTiempoEntrega() {
-        return (int) Math.round(20 + (1.5 * distanciaKm));
+
+        return 16 + (int) distancia * 2;
     }
 }

@@ -1,50 +1,101 @@
 package model;
 
 /**
- * Clase abstracta que representa un pedido genérico de SpeedFast.
- *
- * Contiene los atributos y comportamientos comunes
- * para los distintos tipos de pedidos.
- * 
+ * Clase abstracta que representa un pedido general de SpeedFast.
+ * Contiene los atributos y comportamientos comunes para los
+ * distintos tipos de pedidos.
  * @author Jorge Munoz Leon
  */
-
 public abstract class Pedido {
 
-    // Atributos comunes de todos los pedidos
-    protected int idPedido;
-    protected String direccionEntrega;
-    protected double distanciaKm;
+    // Identificador único del pedido.
+    protected int numeroPedido;
+
+    // Dirección donde se debe realizar la entrega.
+    protected String direccion;
+
+    // Distancia entre el origen y el destino de la entrega.
+    protected double distancia;
+
+    // Nombre del repartidor asignado al pedido.
+    protected String repartidor;
 
     /**
      * Constructor de la clase Pedido.
      *
-     * @param idPedido identificador del pedido
-     * @param direccionEntrega dirección donde se realizará la entrega
-     * @param distanciaKm distancia hasta el lugar de entrega
+     * @param numeroPedido número identificador del pedido.
+     * @param direccion dirección de entrega.
+     * @param distancia distancia de la entrega en kilómetros.
      */
-    public Pedido(int idPedido, String direccionEntrega, double distanciaKm) {
-        this.idPedido = idPedido;
-        this.direccionEntrega = direccionEntrega;
-        this.distanciaKm = distanciaKm;
+    public Pedido(int numeroPedido, String direccion, double distancia) {
+        this.numeroPedido = numeroPedido;
+        this.direccion = direccion;
+        this.distancia = distancia;
+        this.repartidor = "Sin asignar";
     }
 
     /**
-     * Muestra la información básica del pedido.
+     * Asigna automáticamente un repartidor.
+     * Cada clase hija debe implementar este método
+     * según sus propias reglas de negocio.
      */
-    public void mostrarResumen() {
-        System.out.println("ID del pedido: " + idPedido);
-        System.out.println("Dirección de entrega: " + direccionEntrega);
-        System.out.println("Distancia: " + distanciaKm + " km");
+    public abstract void asignarRepartidor();
+
+    /**
+     * Asigna manualmente un repartidor mediante su nombre.
+     * Este método representa una sobrecarga del método
+     * asignarRepartidor().
+     *
+     * @param nombre nombre del repartidor que será asignado.
+     */
+    public void asignarRepartidor(String nombre) {
+        this.repartidor = nombre;
+
+        System.out.println(
+                "Repartidor asignado manualmente: " + nombre
+        );
     }
 
     /**
      * Calcula el tiempo estimado de entrega.
+     * Cada tipo de pedido implementa su propio cálculo.
      *
-     * Cada clase derivada debe implementar este método
-     * de acuerdo con sus propias reglas.
-     *
-     * @return tiempo estimado de entrega en minutos
+     * @return tiempo estimado de entrega en minutos.
      */
     public abstract int calcularTiempoEntrega();
+
+    /**
+     * Muestra la información principal del pedido.
+     * Este método es común para todos los tipos de pedidos.
+     */
+    public void mostrarResumen() {
+
+        System.out.println("Pedido #" + numeroPedido);
+        System.out.println("Dirección: " + direccion);
+        System.out.println("Distancia: " + distancia + " km");
+        System.out.println("Repartidor asignado: " + repartidor);
+        System.out.println(
+                "Tiempo estimado: "
+                + calcularTiempoEntrega()
+                + " minutos"
+        );
+    }
+
+    /**
+     * Obtiene el número del pedido.
+     *
+     * @return número del pedido.
+     */
+    public int getNumeroPedido() {
+        return numeroPedido;
+    }
+
+    /**
+     * Obtiene el repartidor asignado.
+     *
+     * @return nombre del repartidor.
+     */
+    public String getRepartidor() {
+        return repartidor;
+    }
 }

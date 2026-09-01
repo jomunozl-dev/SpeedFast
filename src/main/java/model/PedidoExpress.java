@@ -1,43 +1,60 @@
 package model;
 
 /**
- * Representa un pedido Express de SpeedFast.
- * 
+ * Representa un pedido de tipo Express.
+ * Hereda los atributos y métodos comunes de Pedido.
  * @author Jorge Munoz Leon
- * 
  */
-
 public class PedidoExpress extends Pedido {
 
     /**
      * Constructor de PedidoExpress.
      *
-     * @param idPedido identificador del pedido
-     * @param direccionEntrega dirección de entrega
-     * @param distanciaKm distancia hasta el lugar de entrega
+     * @param numeroPedido número identificador del pedido.
+     * @param direccion dirección donde se realiza la entrega.
+     * @param distancia distancia de la entrega en kilómetros.
      */
-    public PedidoExpress(int idPedido, String direccionEntrega, double distanciaKm) {
-        super(idPedido, direccionEntrega, distanciaKm);
+    public PedidoExpress(
+            int numeroPedido,
+            String direccion,
+            double distancia) {
+
+        // Llama al constructor de la clase padre.
+        super(numeroPedido, direccion, distancia);
     }
 
     /**
-     * Calcula el tiempo estimado de entrega para un pedido Express.
+     * Asigna automáticamente un repartidor para el pedido Express.
      *
-     * El tiempo base es de 10 minutos.
-     * Si la distancia es mayor a 5 km, se agregan 5 minutos.
+     * Este método sobrescribe el comportamiento definido
+     * en la clase Pedido.
+     */
+    @Override
+    public void asignarRepartidor() {
+
+        repartidor = "Luis Díaz";
+
+        System.out.println(
+                "Asignando repartidor para pedido express..."
+        );
+
+        System.out.println(
+                "→ Buscando repartidor más cercano..."
+        );
+
+        System.out.println(
+                "→ Pedido asignado a " + repartidor
+        );
+    }
+
+    /**
+     * Calcula el tiempo estimado para una entrega Express.
      *
-     * @return tiempo estimado en minutos
+     * @return tiempo estimado en minutos.
      */
     @Override
     public int calcularTiempoEntrega() {
 
-        int tiempo = 10;
-
-        // Se agregan 5 minutos si la distancia supera los 5 km
-        if (distanciaKm > 5) {
-            tiempo += 5;
-        }
-
-        return tiempo;
+        return 15 + (int) distancia;
     }
 }

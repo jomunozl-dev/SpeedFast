@@ -4,69 +4,160 @@ import model.Pedido;
 import model.PedidoComida;
 import model.PedidoEncomienda;
 import model.PedidoExpress;
+import servicio.ControladorDeEnvios;
 
 /**
- * 
- * Clase principal que prueba los distintos tipos de pedidos.
- * 
+ * Clase principal del sistema SpeedFast.
+ *
+ * Permite ejecutar una simulación de las operaciones
+ * solicitadas en la actividad.
  * @author Jorge Munoz Leon
- * 
  */
-
 public class Main {
 
+    /**
+     * Método principal del programa.
+     *
+     * @param args argumentos de línea de comandos.
+     */
     public static void main(String[] args) {
 
-        // Crear un pedido de comida de 5 km
-        Pedido comida = new PedidoComida(
-                1,
-                "Av. Alemania 123",
-                5
+        /*
+         * POLIMORFISMO:
+         *
+         * Las variables son de tipo Pedido, pero los objetos
+         * corresponden a diferentes clases derivadas.
+         */
+        Pedido pedidoComida =
+                new PedidoComida(
+                        101,
+                        "Av. Providencia 123",
+                        5
+                );
+
+        Pedido pedidoEncomienda =
+                new PedidoEncomienda(
+                        102,
+                        "Av. Santa Rosa 567",
+                        7
+                );
+
+        Pedido pedidoExpress =
+                new PedidoExpress(
+                        103,
+                        "Av. Vicuña Mackenna 890",
+                        4
+                );
+
+
+        // ------------------------------------------
+        // PEDIDO DE COMIDA
+        // ------------------------------------------
+
+        System.out.println(
+                "===== PEDIDO COMIDA ====="
         );
 
-        // Crear una encomienda de 5 km
-        Pedido encomienda = new PedidoEncomienda(
-                2,
-                "Av. España 456",
-                5
-        );
+        /*
+         * Se ejecuta la versión sobrescrita de
+         * asignarRepartidor() de PedidoComida.
+         */
+        pedidoComida.asignarRepartidor();
 
-        // Crear un pedido Express de 7 km
-        Pedido express = new PedidoExpress(
-                3,
-                "Av. Los Carrera 789",
-                7
-        );
+        // Se muestra el resumen del pedido.
+        pedidoComida.mostrarResumen();
 
-        System.out.println("===== PEDIDO COMIDA =====");
+        /*
+         * Se crea un controlador para administrar
+         * las operaciones del pedido.
+         */
+        ControladorDeEnvios controladorComida =
+                new ControladorDeEnvios(pedidoComida);
 
-        // Mostrar información básica
-        comida.mostrarResumen();
+        // Se despacha el pedido.
+        controladorComida.despachar();
 
-        // Calcular y mostrar tiempo estimado
-        System.out.println("Tiempo estimado: "
-                + comida.calcularTiempoEntrega() + " minutos");
 
         System.out.println();
 
-        System.out.println("===== PEDIDO ENCOMIENDA =====");
 
-        // Mostrar información básica
-        encomienda.mostrarResumen();
+        // ------------------------------------------
+        // PEDIDO DE ENCOMIENDA
+        // ------------------------------------------
 
-        // Calcular y mostrar tiempo estimado
-        System.out.println("Tiempo estimado: "
-                + encomienda.calcularTiempoEntrega() + " minutos");
+        System.out.println(
+                "===== PEDIDO ENCOMIENDA ====="
+        );
+
+        /*
+         * Se demuestra la sobreescritura:
+         * se ejecuta la implementación de
+         * PedidoEncomienda.
+         */
+        pedidoEncomienda.asignarRepartidor();
+
+        // Muestra los datos del pedido.
+        pedidoEncomienda.mostrarResumen();
+
+        /*
+         * SOBRECARGA:
+         *
+         * Ahora utilizamos la segunda versión
+         * del método asignarRepartidor(),
+         * que recibe un String.
+         */
+        pedidoEncomienda.asignarRepartidor(
+                "Camila Soto"
+        );
+
+        // Se crea el controlador.
+        ControladorDeEnvios controladorEncomienda =
+                new ControladorDeEnvios(pedidoEncomienda);
+
+        // Se despacha la encomienda.
+        controladorEncomienda.despachar();
+
 
         System.out.println();
 
-        System.out.println("===== PEDIDO EXPRESS =====");
 
-        // Mostrar información básica
-        express.mostrarResumen();
+        // ------------------------------------------
+        // PEDIDO EXPRESS
+        // ------------------------------------------
 
-        // Calcular y mostrar tiempo estimado
-        System.out.println("Tiempo estimado: "
-                + express.calcularTiempoEntrega() + " minutos");
+        System.out.println(
+                "===== PEDIDO EXPRESS ====="
+        );
+
+        // Asignación automática del repartidor.
+        pedidoExpress.asignarRepartidor();
+
+        // Muestra el resumen del pedido.
+        pedidoExpress.mostrarResumen();
+
+        // Se crea el controlador del pedido Express.
+        ControladorDeEnvios controladorExpress =
+                new ControladorDeEnvios(pedidoExpress);
+
+        // Se cancela el pedido Express.
+        controladorExpress.cancelar();
+
+
+        System.out.println();
+
+
+        // ------------------------------------------
+        // HISTORIAL
+        // ------------------------------------------
+
+        System.out.println(
+                "===== HISTORIAL DE ENTREGAS ====="
+        );
+
+        /*
+         * Se consulta el historial mediante la interfaz
+         * Rastreable implementada por el controlador.
+         */
+        controladorExpress.verHistorial();
     }
 }
