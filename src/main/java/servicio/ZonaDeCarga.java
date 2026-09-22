@@ -1,13 +1,13 @@
+/**
+ *
+ * @author Jorge Munoz Leon
+ */
+
 package servicio;
 
 import java.util.LinkedList;
 import java.util.List;
 import model.Pedido;
-
-/**
- *
- * @author Jorge Munoz Leon
- */
 
 public class ZonaDeCarga {
     private final List<Pedido> pedidosPendientes;
@@ -19,7 +19,6 @@ public class ZonaDeCarga {
 
     public synchronized void agregarPedido(Pedido p) {
         pedidosPendientes.add(p);
-        
         System.out.println("Pedido #" + p.getId() + " agregado. Destino: " + p.getDireccionEntrega());
         notifyAll();
     }
@@ -38,5 +37,9 @@ public class ZonaDeCarga {
 
     public synchronized int getPedidosPendientesCount() {
         return this.pedidosPendientes.size();
+    }
+    
+    public synchronized List<Pedido> obtenerTodosLosPedidos() {
+        return new java.util.ArrayList<>(pedidosPendientes);
     }
 }

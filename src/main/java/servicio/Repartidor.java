@@ -1,9 +1,10 @@
-package servicio;
-import model.Pedido;
 /**
  *
- * @author Joge Munoz Leon
+ * @author Jorge Munoz Leon
  */
+
+package servicio;
+import model.Pedido;
 
 public class Repartidor implements Runnable {
     // Atributos solicitados
