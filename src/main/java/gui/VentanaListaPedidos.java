@@ -1,26 +1,21 @@
-/**
- *
- * @author Jorge Munoz Leon
- */
-
 package gui;
 
+import Controlador.ControladorPedido; 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import model.Pedido;
-import servicio.ZonaDeCarga;
 
 public class VentanaListaPedidos extends JFrame {
 
-    private final ZonaDeCarga zonaDeCarga;
     private JTable tablaPedidos;
     private DefaultTableModel modeloTabla;
+    private ControladorPedido controlador; 
 
-    public VentanaListaPedidos(ZonaDeCarga zona) {
-        this.zonaDeCarga = zona;
+    public VentanaListaPedidos() {
+        this.controlador = new ControladorPedido();
 
-        setTitle("Listado de Pedidos");
+        setTitle("Lista de Pedidos - MVC");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -32,7 +27,7 @@ public class VentanaListaPedidos extends JFrame {
 
         add(new JScrollPane(tablaPedidos), BorderLayout.CENTER);
 
-        JButton btnRefrescar = new JButton("Refrescar");
+        JButton btnRefrescar = new JButton("Refrescar Tabla");
         btnRefrescar.addActionListener(e -> cargarDatos());
         add(btnRefrescar, BorderLayout.SOUTH);
 
@@ -40,8 +35,9 @@ public class VentanaListaPedidos extends JFrame {
     }
 
     private void cargarDatos() {
-        modeloTabla.setRowCount(0); // Limpiar filas anteriores
-        for (Pedido p : zonaDeCarga.obtenerTodosLosPedidos()) {
+        modeloTabla.setRowCount(0);
+        
+        for (Pedido p : controlador.obtenerTodosLosPedidos()) {
             Object[] fila = {p.getId(), p.getDireccionEntrega(), p.getTipo(), p.getEstado()};
             modeloTabla.addRow(fila);
         }

@@ -1,37 +1,27 @@
-/**
- *
- * @author Jorge Munoz Leon
- */
-
 package gui;
 
+import Controlador.ControladorPedido;
 import java.awt.*;
 import javax.swing.*;
 import model.Pedido;
-import servicio.ZonaDeCarga;
 
 public class VentanaRegistroPedido extends JFrame {
 
-    private final ZonaDeCarga zonaDeCarga;
-    private JTextField txtId;
     private JTextField txtDireccion;
     private JComboBox<Pedido.TipoPedido> cbTipo;
+    private ControladorPedido controlador;
 
-    public VentanaRegistroPedido(ZonaDeCarga zona) {
-        this.zonaDeCarga = zona;
+    public VentanaRegistroPedido() {
+        this.controlador = new ControladorPedido(); 
 
-        setTitle("Registrar Nuevo Pedido");
-        setSize(350, 250);
+        setTitle("Registrar Pedido");
+        setSize(350, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        JPanel panelForm = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel panelForm = new JPanel(new GridLayout(2, 2, 10, 10));
         panelForm.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-
-        panelForm.add(new JLabel("ID Pedido:"));
-        txtId = new JTextField();
-        panelForm.add(txtId);
 
         panelForm.add(new JLabel("Dirección:"));
         txtDireccion = new JTextField();
@@ -43,30 +33,26 @@ public class VentanaRegistroPedido extends JFrame {
 
         add(panelForm, BorderLayout.CENTER);
 
-        JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.addActionListener(e -> guardarPedido());
+        JButton btnGuardar = new JButton("Guardar Pedido");
+        btnGuardar.addActionListener(e -> guardar());
         add(btnGuardar, BorderLayout.SOUTH);
     }
 
-    private void guardarPedido() {
-        try {
-            int id = Integer.parseInt(txtId.getText().trim());
-            String direccion = txtDireccion.getText().trim();
-            Pedido.TipoPedido tipo = (Pedido.TipoPedido) cbTipo.getSelectedItem();
+    private void guardar() {
+        String direccion = txtDireccion.getText();
+        Pedido.TipoPedido tipo = (Pedido.TipoPedido) cbTipo.getSelectedItem();
 
-            if (direccion.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "La dirección no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        String resultado = controlador.registrarPedido(direccion, tipo);
 
-            Pedido nuevoPedido = new Pedido(id, direccion, tipo);
-            zonaDeCarga.agregarPedido(nuevoPedido);
-
-            JOptionPane.showMessageDialog(this, "Pedido #" + id + " registrado correctamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
+        if ("OK".equals(resultado)) {
+            JOptionPane.showMessageDialog(this, "Pedido registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "El ID debe ser un número entero válido.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        } else if (resultado.startsWith("Error de conexión")) {
+            
+            JOptionPane.showMessageDialog(this, resultado, "Error de Conexión BD", JOptionPane.ERROR_MESSAGE);
+        } else {
+            
+            JOptionPane.showMessageDialog(this, resultado, "Atención en los Datos", JOptionPane.WARNING_MESSAGE);
         }
     }
 }
