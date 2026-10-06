@@ -1,6 +1,6 @@
 # SpeedFast - Sistema de Gestión de Entregas
 
-Proyecto desarrollado en Java para la asignatura **Desarrollo Orientada a Objetos II**.
+Proyecto desarrollado en Java para la asignatura **Desarrollo Orientado a Objetos II**.
 
 La aplicación permite gestionar **repartidores, pedidos y entregas** mediante una interfaz gráfica desarrollada con Java Swing y persistencia de datos mediante JDBC.
 
@@ -831,6 +831,6 @@ Para ejecutar correctamente SpeedFast:
 
 **Jorge Munoz Leon**
 
-**Desarrollo Orientada a Objetos II**
+**Desarrollo Orientado a Objetos II**
 
 **SpeedFast APP**
