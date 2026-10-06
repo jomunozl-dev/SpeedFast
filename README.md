@@ -831,10 +831,6 @@ Para ejecutar correctamente SpeedFast:
 
 **Jorge Munoz Leon**
 
-Proyecto académico desarrollado para:
-
 **Desarrollo Orientada a Objetos II**
 
-Caso:
-
-**SpeedFast - Sistema de Gestión de Pedidos y Entregas**
+**SpeedFast APP**
