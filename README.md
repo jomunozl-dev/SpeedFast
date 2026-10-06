@@ -1,6 +1,6 @@
 # SpeedFast - Sistema de Gestión de Entregas
 
-Proyecto desarrollado en Java para la asignatura **Desarrollo Orientada a Objetos II**.
+Proyecto desarrollado en Java para la asignatura **Fundamentos de Programación Orientada a Objetos II**.
 
 La aplicación permite gestionar **repartidores, pedidos y entregas** mediante una interfaz gráfica desarrollada con Java Swing y persistencia de datos mediante JDBC.
 
@@ -379,4 +379,462 @@ ORDER BY id;
 
 Inicialmente las tablas pueden encontrarse sin registros.
 
-Los datos
+Los datos serán registrados desde la aplicación Java.
+
+---
+
+# 10. Consulta de entregas
+
+Para comprobar las relaciones entre pedidos, repartidores y entregas se puede ejecutar:
+
+```sql
+SELECT
+    e.id AS id_entrega,
+    e.id_pedido,
+    p.direccion,
+    p.tipo,
+    p.estado,
+    e.id_repartidor,
+    r.nombre AS repartidor,
+    e.fecha,
+    e.hora
+FROM entregas e
+INNER JOIN pedidos p
+    ON e.id_pedido = p.id
+INNER JOIN repartidores r
+    ON e.id_repartidor = r.id
+ORDER BY e.id;
+```
+
+---
+
+# 11. Oracle Wallet
+
+Para establecer la conexión con Oracle Autonomous Database se utiliza un **Oracle Wallet**.
+
+Por motivos de seguridad, el Wallet utilizado durante el desarrollo **no se incluye en el repositorio GitHub**.
+
+Cada usuario que ejecute el proyecto debe utilizar el Wallet correspondiente a su propia Oracle Autonomous Database.
+
+El Wallet debe descargarse desde Oracle Cloud y posteriormente descomprimirse en el equipo.
+
+Ejemplo:
+
+```text
+/home/usuario/Documents/Wallet_BaseDatos/
+```
+
+La ruta debe apuntar a la carpeta descomprimida y no directamente al archivo `.zip`.
+
+---
+
+# 12. Configuración de la conexión
+
+La conexión se administra desde:
+
+```text
+dao/ConexionDB.java
+```
+
+Para utilizar otra base de datos Oracle se debe configurar:
+
+```text
+Wallet
+Usuario Oracle
+Contraseña Oracle
+Alias TNS
+```
+
+El alias TNS se encuentra dentro del archivo:
+
+```text
+tnsnames.ora
+```
+
+incluido en el Wallet.
+
+Una URL JDBC utilizando Wallet tiene una estructura similar a:
+
+```text
+jdbc:oracle:thin:@nombrebd_high?TNS_ADMIN=/ruta/al/wallet
+```
+
+Donde:
+
+```text
+nombrebd_high
+```
+
+debe corresponder a un alias disponible en `tnsnames.ora`.
+
+---
+
+# 13. Seguridad
+
+El repositorio no debe contener información privada de conexión.
+
+No se incluyen:
+
+```text
+Contraseñas
+Wallet personal
+cwallet.sso
+ewallet.p12
+keystore.jks
+truststore.jks
+```
+
+Cada usuario debe utilizar sus propias credenciales de Oracle.
+
+---
+
+# 14. Configuración de la base de datos
+
+Para configurar el proyecto desde cero:
+
+1. Crear o disponer de una Oracle Autonomous Database.
+
+2. Descargar el Wallet correspondiente desde Oracle Cloud.
+
+3. Descomprimir el Wallet en el equipo.
+
+4. Configurar una conexión en Oracle SQL Developer.
+
+5. Conectarse a la base de datos.
+
+6. Ejecutar el archivo:
+
+```text
+database/speedfast_oracle.sql
+```
+
+7. Verificar la existencia de:
+
+```text
+REPARTIDORES
+PEDIDOS
+ENTREGAS
+```
+
+8. Configurar `ConexionDB.java` con la conexión correspondiente.
+
+9. Abrir el proyecto Java.
+
+10. Ejecutar `app.Main`.
+
+---
+
+# 15. Ejecutar desde Apache NetBeans
+
+El proyecto fue desarrollado utilizando:
+
+```text
+Apache NetBeans IDE 29
+```
+
+Para ejecutarlo:
+
+1. Abrir Apache NetBeans.
+
+2. Seleccionar:
+
+```text
+File > Open Project
+```
+
+3. Seleccionar la carpeta del proyecto.
+
+4. Esperar que Maven descargue las dependencias.
+
+5. Verificar que el proyecto utilice JDK 25.
+
+6. Configurar el acceso a Oracle.
+
+7. Ejecutar el proyecto.
+
+La clase principal es:
+
+```text
+app.Main
+```
+
+---
+
+# 16. Ejecutar desde IntelliJ IDEA
+
+El proyecto también puede ejecutarse desde IntelliJ IDEA.
+
+Al utilizar Maven no depende exclusivamente de NetBeans.
+
+Pasos:
+
+1. Clonar o descargar el repositorio desde GitHub.
+
+2. Abrir IntelliJ IDEA.
+
+3. Seleccionar:
+
+```text
+Open
+```
+
+4. Seleccionar la carpeta raíz de SpeedFast.
+
+5. IntelliJ detectará el archivo:
+
+```text
+pom.xml
+```
+
+6. Esperar que Maven descargue las dependencias.
+
+7. Configurar **JDK 25** como Project SDK.
+
+8. Configurar Oracle Wallet y las credenciales de conexión.
+
+9. Abrir:
+
+```text
+src/main/java/app/Main.java
+```
+
+10. Ejecutar `Main`.
+
+---
+
+# 17. Orden recomendado para probar el sistema
+
+Para realizar una prueba completa se recomienda seguir este orden:
+
+```text
+1. Registrar Repartidor
+        ↓
+2. Registrar Pedido
+        ↓
+3. Registrar Entrega
+```
+
+Esto se debe a que una entrega debe estar relacionada con un pedido y un repartidor previamente registrados.
+
+Ejemplo:
+
+```text
+REPARTIDOR
+
+Nombre:
+Juan Pérez
+```
+
+Luego:
+
+```text
+PEDIDO
+
+Dirección:
+Avenida Central 123
+
+Tipo:
+COMIDA
+
+Estado:
+PENDIENTE
+```
+
+Finalmente:
+
+```text
+ENTREGA
+
+Pedido:
+Pedido registrado
+
+Repartidor:
+Juan Pérez
+
+Fecha:
+2026-10-05
+
+Hora:
+20:30
+```
+
+---
+
+# 18. Adaptación de MySQL a Oracle
+
+El esquema original de la actividad utiliza sintaxis MySQL.
+
+Debido a que el proyecto utiliza Oracle Cloud, se realizaron las equivalencias correspondientes.
+
+## AUTO_INCREMENT
+
+MySQL:
+
+```sql
+id INT AUTO_INCREMENT PRIMARY KEY
+```
+
+Oracle:
+
+```sql
+id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY
+```
+
+## VARCHAR
+
+MySQL:
+
+```sql
+VARCHAR(100)
+```
+
+Oracle:
+
+```sql
+VARCHAR2(100)
+```
+
+## ENUM
+
+MySQL:
+
+```sql
+ENUM('COMIDA','ENCOMIENDA','EXPRESS')
+```
+
+Oracle:
+
+```sql
+VARCHAR2(20)
+CHECK (
+    tipo IN (
+        'COMIDA',
+        'ENCOMIENDA',
+        'EXPRESS'
+    )
+)
+```
+
+## TIME
+
+El campo de hora fue adaptado para Oracle utilizando:
+
+```sql
+VARCHAR2(8)
+```
+
+con formato:
+
+```text
+HH:mm:ss
+```
+
+---
+
+# 19. Interfaz gráfica
+
+La interfaz fue desarrollada utilizando Java Swing.
+
+Entre los componentes utilizados se encuentran:
+
+```text
+JFrame
+JPanel
+JTable
+JTextField
+JComboBox
+JButton
+JOptionPane
+```
+
+Los formularios se encuentran conectados con los controladores y las clases DAO para realizar las operaciones CRUD sobre Oracle.
+
+---
+
+# 20. Validaciones
+
+Antes de ejecutar las operaciones sobre la base de datos se realizan validaciones básicas.
+
+Entre ellas:
+
+- Campos obligatorios.
+- Nombre del repartidor.
+- Dirección del pedido.
+- Tipo de pedido.
+- Estado del pedido.
+- Selección de pedido para una entrega.
+- Selección de repartidor para una entrega.
+- Formato de fecha.
+- Formato de hora.
+
+Los mensajes de validación y los resultados de las operaciones son mostrados mediante:
+
+```text
+JOptionPane
+```
+
+---
+
+# 21. Manejo de errores
+
+Las operaciones JDBC utilizan bloques `try-catch` para manejar errores durante las operaciones de persistencia.
+
+Ejemplo:
+
+```java
+try {
+    // Operación de base de datos
+} catch (SQLException e) {
+    // Manejo del error
+}
+```
+
+También se utiliza `try-with-resources` para cerrar correctamente:
+
+```text
+Connection
+PreparedStatement
+ResultSet
+```
+
+---
+
+# 22. Resumen de ejecución
+
+Para ejecutar correctamente SpeedFast:
+
+```text
+1. Tener JDK 25
+        ↓
+2. Abrir proyecto Maven
+        ↓
+3. Tener Oracle Autonomous Database
+        ↓
+4. Descargar Oracle Wallet
+        ↓
+5. Crear las tablas con speedfast_oracle.sql
+        ↓
+6. Configurar ConexionDB
+        ↓
+7. Ejecutar app.Main
+        ↓
+8. Registrar Repartidor
+        ↓
+9. Registrar Pedido
+        ↓
+10. Registrar Entrega
+```
+
+---
+
+# Autor
+
+**Jorge Munoz Leon**
+
+Proyecto académico desarrollado para:
+
+**Desarrollo Orientada a Objetos II**
+
+Caso:
+
+**SpeedFast - Sistema de Gestión de Pedidos y Entregas**
