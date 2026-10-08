@@ -398,10 +398,10 @@ SELECT
     r.nombre AS repartidor,
     e.fecha,
     e.hora
-FROM entregas e
-INNER JOIN pedidos p
+FROM ENTREGAS e
+INNER JOIN PEDIDOS p
     ON e.id_pedido = p.id
-INNER JOIN repartidores r
+INNER JOIN REPARTIDORES r
     ON e.id_repartidor = r.id
 ORDER BY e.id;
 ```
