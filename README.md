@@ -365,15 +365,15 @@ Después de ejecutar el script se puede comprobar la creación de las tablas med
 
 ```sql
 SELECT *
-FROM repartidores
+FROM REPARTIDORES
 ORDER BY id;
 
 SELECT *
-FROM pedidos
+FROM PEDIDOS
 ORDER BY id;
 
 SELECT *
-FROM entregas
+FROM ENTREGAS
 ORDER BY id;
 ```
 
